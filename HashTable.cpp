@@ -2,35 +2,14 @@
 #include <string>
 #include <cstdint>
 
-struct Item {
-  std::string key;
-  std::string val;
-  Item* next;
-
-  Item(const std::string& k, const std::string& v) : key(k), val(v), next(nullptr) {};
-};
-
-struct Bucket {
-  Item* head;
-
-  Bucket() : head(nullptr) {};
-
-  ~Bucket() {
-    Item* current = head;
-    while (current != nullptr) {
-      Item* next = current->next;
-      delete current;
-      current = next;
-    };
-  };
-};
+#include "LinkedList.cpp"
 
 class HashTable {
 private:
   size_t capacity; // available buckets
   size_t size; // used buckets
   size_t mod;
-  Bucket* values;
+  LinkedList* values;
 
   std::uint32_t hash_func(const std::string& key) {
     std::uint32_t hash = 2166136261u;
@@ -47,16 +26,16 @@ private:
 
   void resize() {
     size_t new_capacity = capacity * 2;
-    Bucket* new_values = new Bucket[new_capacity];
+    LinkedList* new_values = new LinkedList[new_capacity];
 
     for(size_t i = 0; i < capacity; ++i) {
-      Item* current = values[i].head;
+      Node* current = values[i].head;
       while(current != nullptr) {
         size_t new_idx = get_index(current->key, new_capacity);
-        
-        Item* new_item = new Item(current->key, current->val);
-        new_item->next = new_values[new_idx].head;
-        new_values[new_idx].head = new_item;
+
+        Node* new_node = new Node(current->key, current->val);
+        new_node->next = new_values[new_idx].head;
+        new_values[new_idx].head = new_node;
 
         current = current->next;
       };
@@ -69,7 +48,7 @@ private:
 
 public:
   HashTable(size_t start_capacity = 2) : capacity(start_capacity), size(0), mod(2069) {
-    values = new Bucket[capacity];
+    values = new LinkedList[capacity];
   };
 
   void put(const std::string& key, const std::string& val) {
@@ -79,10 +58,10 @@ public:
     };
 
     size_t idx = get_index(key, capacity);
-    Bucket& bucket = values[idx];
+    LinkedList& bucket = values[idx];
 
     if(bucket.head != nullptr) {
-      Item* current = bucket.head;
+      Node* current = bucket.head;
       while( current != nullptr ) {
         if(current->key == key) {
           std::cerr << "Error: duplicate key" << '\n';
@@ -91,17 +70,17 @@ public:
         current = current->next;
       };
 
-      Item* new_item = new Item(key, val);
-      new_item->next = bucket.head;
-      bucket.head = new_item;
+      Node* new_node = new Node(key, val);
+      new_node->next = bucket.head;
+      bucket.head = new_node;
     } else {
-      bucket.head = new Item(key, val);
+      bucket.head = new Node(key, val);
     };
   };
 
   std::string get(const std::string& key) {
     size_t idx = get_index(key, capacity);
-    Item* current = values[idx].head;
+    Node* current = values[idx].head;
 
     while( current != nullptr ) {
       if(current->key == key) {
@@ -116,7 +95,7 @@ public:
 
   void set(const std::string& key, const std::string& val) {
     size_t idx = get_index(key, capacity);
-    Item* current = values[idx].head;
+    Node* current = values[idx].head;
 
     while( current != nullptr ) {
       if(current->key == key) {
@@ -131,8 +110,8 @@ public:
 
   void del(const std::string& key) {
     size_t idx = get_index(key, capacity);
-    Item* current = values[idx].head;
-    Item* prev = nullptr;
+    Node* current = values[idx].head;
+    Node* prev = nullptr;
 
     while(current != nullptr) {
       if(current->key == key) {
@@ -154,7 +133,7 @@ public:
 
   bool contains(const std::string& key) {
     const size_t idx = get_index(key, capacity);
-    Item* current = values[idx].head;
+    Node* current = values[idx].head;
 
     while(current != nullptr) {
       if(current->key == key) {
@@ -175,7 +154,7 @@ public:
   void display() {
     std::cout << "{";
     for(size_t i = 0; i < capacity; ++i) {
-      Item* current = values[i].head;
+      Node* current = values[i].head;
       while(current != nullptr) {
         std::cout << '\n' << "  \"" << current->key << "\": " << "\"" << current->val << "\"" << ',';
         current = current->next;
@@ -187,7 +166,7 @@ public:
   void print_buckets() {
     for(size_t i = 0; i < capacity; ++i) {
       std::cout << "Bucket: " << i;
-      Item* current = values[i].head;
+      Node* current = values[i].head;
       while(current != nullptr) {
         std::cout << " (" << current->key << ": " << current->val << ") ";
         current = current->next;
