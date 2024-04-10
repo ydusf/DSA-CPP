@@ -2,10 +2,10 @@
 #include <string>
 #include <cstdint>
 
-#include "LinkedList.hpp"
-#include "HashTable.hpp"
+#include "../headers/LinkedList.hpp"
+#include "../headers/HashTable.hpp"
 
-HashTable::HashTable() : capacity(2), size(0), mod(2069) {
+HashTable::HashTable() : capacity(2), size(0) {
   values = new LinkedList[capacity];
 };
 

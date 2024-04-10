@@ -1,5 +1,4 @@
-
-#include "LinkedList.hpp"
+#include "../headers/LinkedList.hpp"
 
 Node::Node(const std::string& k, const std::string& v) : key(k), val(v), next(nullptr) {};
 LinkedList::LinkedList() : head(nullptr) {};

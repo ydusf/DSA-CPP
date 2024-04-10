@@ -12,7 +12,6 @@ class HashTable {
 private:
   size_t capacity; // available buckets
   size_t size; // used buckets
-  size_t mod;
   LinkedList* values;
 
   std::uint32_t hash_func(const std::string& key);
