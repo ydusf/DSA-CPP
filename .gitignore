@@ -1,2 +1,4 @@
 main.cpp
 main
+*.o
+*.c

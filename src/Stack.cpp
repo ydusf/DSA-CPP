@@ -42,6 +42,11 @@ void Stack::duplicate() {
 };
 
 void Stack::left_rotate(size_t n) {
+  if(n <= 0) {
+    std::cerr << "Error: cannot rotate stack by zero or less" << '\n';
+    return;
+  }
+  
   for(size_t i = 0; i < n-1; ++i) {
     std::string temp = values[i];
     values[i] = values[i+1];
@@ -50,6 +55,11 @@ void Stack::left_rotate(size_t n) {
 };
 
 void Stack::right_rotate(size_t n) {
+  if(n <= 0) {
+    std::cerr << "Error: cannot rotate stack by zero or less" << '\n';
+    return;
+  }
+
   for(size_t i = n-1; i > 0; --i) {
     std::string temp = values[i];
     values[i] = values[i-1];
