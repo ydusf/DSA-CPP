@@ -12,6 +12,7 @@ private:
   std::string* values;
 
   void resize();
+  void rotate(size_t start, size_t end);
 
 public:
   Stack();

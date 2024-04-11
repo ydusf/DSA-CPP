@@ -3,3 +3,7 @@ main
 *.o
 *.c
 Makefile
+googletest
+CMakeLists.txt
+tests
+build

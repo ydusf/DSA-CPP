@@ -38,14 +38,18 @@ void Stack::resize() {
 };
 
 void Stack::duplicate() {
+  if(isEmpty()) {
+    std::cerr << "Error: stack is empty" << '\n';
+    return;
+  };
   push(values[size-1]);
 };
 
 void Stack::left_rotate(size_t n) {
-  if(n <= 0) {
-    std::cerr << "Error: cannot rotate stack by zero or less" << '\n';
+  if(n <= 0 || n > size) {
+    std::cerr << "Error: n is out of bounds" << '\n';
     return;
-  }
+  };
   
   for(size_t i = 0; i < n-1; ++i) {
     std::string temp = values[i];
@@ -55,10 +59,10 @@ void Stack::left_rotate(size_t n) {
 };
 
 void Stack::right_rotate(size_t n) {
-  if(n <= 0) {
-    std::cerr << "Error: cannot rotate stack by zero or less" << '\n';
+  if(n <= 0 || n > size) {
+    std::cerr << "Error: n is out of bounds" << '\n';
     return;
-  }
+  };
 
   for(size_t i = n-1; i > 0; --i) {
     std::string temp = values[i];
@@ -78,7 +82,7 @@ size_t Stack::get_size() {
 void Stack::display() {
   for(size_t i = 0; i < capacity; ++i) {
     std::cout << "Val (" << i << "): " << values[i] << '\n';
-  }
+  };
 };
 
 Stack::~Stack() {
